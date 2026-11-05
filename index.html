@@ -2545,17 +2545,43 @@ const Game = {
         ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(b.x - b.radius * 0.3, b.y - b.radius * 0.3, b.radius * 0.5, 0, Math.PI * 2); ctx.fill();
     },
 
-    drawPlacementPreview(ctx) {
+        drawPlacementPreview(ctx) {
         const type = this.getEffectiveTower(this.selectedTower);
         if (!type) return;
         const x = this.mouseX, y = this.mouseY;
         const valid = this.canPlaceAt(x, y, type);
+        
+        // 1. Рисуем круг радиуса
         ctx.beginPath(); ctx.arc(x, y, type.range, 0, Math.PI * 2);
         ctx.fillStyle = valid ? 'rgba(0,255,170,0.10)' : 'rgba(255,80,80,0.12)'; ctx.fill();
         ctx.strokeStyle = valid ? 'rgba(0,255,170,0.85)' : 'rgba(255,90,90,0.9)';
         ctx.lineWidth = 2; ctx.setLineDash([8, 6]); ctx.stroke(); ctx.setLineDash([]);
+
+        // 2. Рисуем саму башню (призрак)
+        ctx.save();
+        ctx.globalAlpha = 0.7;
+        const tempTower = {
+            x: x, y: y, type: this.selectedTower,
+            angle: -Math.PI / 2,
+            buildAnim: 0, recoil: 0, targetMode: 'nearest',
+            ...type
+        };
+        
+        switch (tempTower.type) {
+            case 'gun': this.drawGunTower(ctx, tempTower, 1); break;
+            case 'cannon': this.drawCannonTower(ctx, tempTower, 1); break;
+            case 'laser': this.drawLaserTower(ctx, tempTower, 1); break;
+            case 'freeze': this.drawFreezeTower(ctx, tempTower, 1); break;
+            case 'rocket': this.drawRocketTower(ctx, tempTower, 1); break;
+            case 'lightning': this.drawLightningTower(ctx, tempTower, 1); break;
+            case 'flame': this.drawFlameTower(ctx, tempTower, 1); break;
+            case 'tesla': this.drawTeslaTower(ctx, tempTower, 1); break;
+        }
+        ctx.restore();
+
+        // 3. Рисуем текст с названием
         ctx.fillStyle = valid ? 'rgba(180,255,220,0.95)' : 'rgba(255,180,180,0.95)';
-        ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+        ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center';
         ctx.fillText(L(type, 'name'), x, y - 30); ctx.textAlign = 'start';
     },
 
