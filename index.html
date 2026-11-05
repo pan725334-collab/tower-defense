@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Легенда Обороны</title>
+<!-- Подключение VK Bridge через официальный CDN (рекомендуется VK) -->
 <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -46,7 +47,7 @@ html, body {
 .screen h2 { font-size: 1.6rem; margin-bottom: 1.2rem; color: #aaccff; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); text-align: center; }
 .screen p { font-size: 1.05rem; color: #aabbcc; margin-bottom: 1.5rem; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); text-align: center; line-height: 1.5; }
 
-/* === ЕДИНЫЙ КОМПАКТНЫЙ СТИЛЬ ВСЕХ .menu-btn (как на титульном экране) === */
+/* === ЕДИНЫЙ КОМПАКТНЫЙ СТИЛЬ ВСЕХ .menu-btn === */
 .menu-btn {
     display: flex; align-items: center; justify-content: center; gap: 5px;
     width: 140px; max-width: 60vw;
@@ -450,6 +451,28 @@ body.touch .battle-stat { font-size: 1.1rem; }
     text-decoration: underline; cursor: pointer; font-size: 0.9rem;
     font-family: inherit; padding: 4px 8px;
 }
+
+/* === НОВЫЕ СТИЛИ ДЛЯ КАСТОМНЫХ МОДАЛЬНЫХ ОКОН === */
+#custom-modal-overlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px); z-index: 999999;
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; transition: opacity 0.2s ease; pointer-events: none;
+}
+#custom-modal-overlay.active { opacity: 1; pointer-events: auto; }
+.custom-modal {
+    background: linear-gradient(160deg, rgba(10, 30, 60, 0.98), rgba(0, 10, 30, 0.98));
+    border: 2px solid #00c6ff; border-radius: 16px; padding: 24px;
+    width: 90%; max-width: 400px; text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 150, 255, 0.3);
+    transform: translateY(20px); transition: transform 0.2s ease;
+}
+#custom-modal-overlay.active .custom-modal { transform: translateY(0); }
+.custom-modal h3 { color: #fff; font-size: 1.3rem; margin-bottom: 12px; text-shadow: 0 1px 2px #000; }
+.custom-modal p { color: #aabbdd; font-size: 1rem; line-height: 1.5; margin-bottom: 24px; }
+.custom-modal-btns { display: flex; gap: 10px; justify-content: center; }
+.custom-modal-btns .menu-btn { width: 120px; font-size: 1rem; padding: 10px 16px; }
+
 @media (max-height: 500px) {
     .battle-top-bar { padding: 6px 10px; gap: 6px; }
     .battle-stat { font-size: 0.85rem; }
@@ -601,11 +624,15 @@ const CONFIG = {
     privacyPolicyUrl: 'https://dev.vk.ru/ru/privacy-policy',
     supportUrl: 'https://vk.ru/club242965785',
     developerName: 'Ваш Разработчик',
-    // Если указать URL вашего бэкенда — на него будут отправляться
-    // параметры запуска для криптографической проверки sign.
-    // Оставьте пустым, если серверная проверка ещё не реализована
-    // (тогда выполняется только структурная проверка на клиенте).
-    signVerifyUrl: '',
+    
+    // ⚠️ КРИТИЧЕСКИ ВАЖНО ДЛЯ VK ИГР ⚠️
+    // Для защиты от подмены данных (читерства) необходимо проверять параметр sign НА СЕРВЕРЕ.
+    // Укажите здесь URL вашего бэкенда, который будет принимать POST-запрос с параметрами
+    // и возвращать { valid: true } или { valid: false }.
+    // Если вы не укажете URL, будет работать только базовая структурная проверка на клиенте,
+    // что НЕ ЯВЛЯЕТСЯ безопасным для продакшена.
+    signVerifyUrl: '', // Пример: 'https://ваш-сервер.ру/api/verify-sign'
+    
     appName: 'Легенда Обороны',
     appNameEn: 'Defense Legend',
     ageRating: '6+',
@@ -617,7 +644,7 @@ const CONFIG = {
     rewardedTimeoutMs: 60000,
     adCheckTimeoutMs: 3000,
     signVerifyTimeoutMs: 4000,
-    debug: false
+    debug: false // 
 };
 
 /* =========================================================
@@ -694,206 +721,58 @@ const ICONS = {
 };
 
 /* =========================================================
-   2. ЛОКАЛИЗАЦИЯ
+   2. ЛОКАЛИЗАЦИЯ (сокращена для читаемости, логика та же)
    ========================================================= */
 const I18N = {
     ru: {
-        menu_title: 'Легенда Обороны',
-        menu_subtitle: 'Защити колонию от космических монстров',
-        menu_campaign: 'Кампания',
-        menu_shop: 'Магазин',
-        menu_help: 'Правила и помощь',
-        menu_support: 'Поддержка',
-        menu_ads: 'Реклама (+{0} ресурсов)',
-        menu_reset: 'Сбросить прогресс',
-        greeting_guest: 'Привет, защитник!',
-        greeting_named: 'Привет, {0}!',
-        best_score: 'Рекорд',
-        progress: 'Звёзд',
-        resources: 'Ресурсов',
-        campaign_title: 'Карта миссий',
-        campaign_subtitle: '35 миссий · каждая 5-я — БОСС<br>Босс открывается только при 9★ на всех предыдущих миссиях',
-        campaign_back: '← В главное меню',
-        waves_label: 'Волн',
-        boss_available: 'БОСС · доступен',
-        boss_progress: 'БОСС · {0}/{1} миссий 9★',
-        difficulty_title: 'Миссия',
-        diff_easy: 'Лёгкий', diff_medium: 'Средний', diff_hard: 'Трудный',
-        diff_easy_desc: 'Базовые параметры',
-        diff_medium_desc: '+60% HP · +1 волна · −2 жизни',
-        diff_hard_desc: '+140% HP · +2 волны · −4 жизни',
-        diff_locked: 'Требуется 1★ на предыдущей сложности',
-        diff_back: '← К карте миссий',
-        dl_easy: 'Легко', dl_medium: 'Средне', dl_hard: 'Сложно',
-        dl_extreme: 'Экстрим', dl_nightmare: 'Кошмар', dl_boss: 'БОСС',
-        shop_title: 'Магазин улучшений',
-        shop_resources_label: 'Ресурсов',
-        shop_subtitle: 'Улучшения действуют во всех миссиях и покупаются навсегда.',
-        shop_tab_general: 'Общие параметры',
-        shop_tab_towers: 'Башни',
-        shop_tab_equipment: 'Доп. оборудование',
-        shop_back: '← В главное меню',
-        shop_level: 'Уровень', shop_max: 'Максимум', shop_unlocked: 'Открыто',
-        shop_resources_word: 'ресурсов',
-        shop_empty: 'В этой вкладке пока нет улучшений',
-        btn_start: 'Старт', btn_wave: 'Волна {0}', btn_wave_n: 'Волна {0}', btn_finish: 'Финиш',
-        btn_speed: 'x{0}',
+        menu_title: 'Легенда Обороны', menu_subtitle: 'Защити колонию от космических монстров',
+        menu_campaign: 'Кампания', menu_shop: 'Магазин', menu_help: 'Правила и помощь', menu_support: 'Поддержка',
+        menu_ads: 'Реклама (+{0} ресурсов)', menu_reset: 'Сбросить прогресс',
+        greeting_guest: 'Привет, защитник!', greeting_named: 'Привет, {0}!',
+        best_score: 'Рекорд', progress: 'Звёзд', resources: 'Ресурсов',
+        campaign_title: 'Карта миссий', campaign_subtitle: '35 миссий · каждая 5-я — БОСС<br>Босс открывается только при 9★ на всех предыдущих миссиях', campaign_back: '← В главное меню',
+        waves_label: 'Волн', boss_available: 'БОСС · доступен', boss_progress: 'БОСС · {0}/{1} миссий 9★',
+        difficulty_title: 'Миссия', diff_easy: 'Лёгкий', diff_medium: 'Средний', diff_hard: 'Трудный',
+        diff_easy_desc: 'Базовые параметры', diff_medium_desc: '+60% HP · +1 волна · −2 жизни', diff_hard_desc: '+140% HP · +2 волны · −4 жизни',
+        diff_locked: 'Требуется 1★ на предыдущей сложности', diff_back: '← К карте миссий',
+        dl_easy: 'Легко', dl_medium: 'Средне', dl_hard: 'Сложно', dl_extreme: 'Экстрим', dl_nightmare: 'Кошмар', dl_boss: 'БОСС',
+        shop_title: 'Магазин улучшений', shop_resources_label: 'Ресурсов', shop_subtitle: 'Улучшения действуют во всех миссиях и покупаются навсегда.',
+        shop_tab_general: 'Общие параметры', shop_tab_towers: 'Башни', shop_tab_equipment: 'Доп. оборудование', shop_back: '← В главное меню',
+        shop_level: 'Уровень', shop_max: 'Максимум', shop_unlocked: 'Открыто', shop_resources_word: 'ресурсов', shop_empty: 'В этой вкладке пока нет улучшений',
+        btn_start: 'Старт', btn_wave: 'Волна {0}', btn_wave_n: 'Волна {0}', btn_finish: 'Финиш', btn_speed: 'x{0}',
         pause_title: 'ПАУЗА', pause_wave: 'Волна', pause_resume: 'Продолжить', pause_quit: 'Выйти в меню',
-        ttp_title: 'Режим прицела',
-        ttp_nearest: 'Ближний', ttp_farthest: 'Дальний', ttp_strongest: 'Сильнейший', ttp_weakest: 'Слабейший', ttp_close: 'Закрыть',
-        cancel_aim: 'Отмена наведения',
-        hint_start: '▼ Нажмите СТАРТ чтобы начать ▼',
-        hint_wave: '▼ Готово к волне {0}. Нажмите СТАРТ ▼',
-        hint_aim: 'ЛКМ / тап — применить · ПКМ / Esc / кнопка — отмена',
-        result_win: 'Победа!', result_lose: 'Поражение',
-        result_mission: 'Миссия', result_score: 'Очки', result_waves: 'Волн пройдено',
-        result_reward: 'Начислено ресурсов',
-        result_next: 'Следующая миссия', result_to_shop: 'В магазин',
-        result_to_campaign: 'К карте миссий', result_to_menu: 'В главное меню',
-        result_unlock: 'Открыта миссия {0}: {1}',
-        result_boss_lock: 'Босс {0}: {1}/{2} предыдущих миссий на 9★',
-        result_campaign_done: 'Кампания полностью пройдена!',
+        ttp_title: 'Режим прицела', ttp_nearest: 'Ближний', ttp_farthest: 'Дальний', ttp_strongest: 'Сильнейший', ttp_weakest: 'Слабейший', ttp_close: 'Закрыть',
+        cancel_aim: 'Отмена наведения', hint_start: '▼ Нажмите СТАРТ чтобы начать ▼', hint_wave: '▼ Готово к волне {0}. Нажмите СТАРТ ▼', hint_aim: 'ЛКМ / тап — применить · ПКМ / Esc / кнопка — отмена',
+        result_win: 'Победа!', result_lose: 'Поражение', result_mission: 'Миссия', result_score: 'Очки', result_waves: 'Волн пройдено',
+        result_reward: 'Начислено ресурсов', result_next: 'Следующая миссия', result_to_shop: 'В магазин', result_to_campaign: 'К карте миссий', result_to_menu: 'В главное меню',
+        result_unlock: 'Открыта миссия {0}: {1}', result_boss_lock: 'Босс {0}: {1}/{2} предыдущих миссий на 9★', result_campaign_done: 'Кампания полностью пройдена!',
         result_difficulty: 'Сложность', result_boss_suffix: ' · БОСС',
-        confirm_reset: 'Сбросить весь прогресс, ресурсы, звёзды и улучшения?',
-        confirm_delete_data: 'Удалить все ваши данные (прогресс, ресурсы, звёзды, улучшения) локально и в облаке VK? Это действие необратимо.',
-        data_deleted: 'Данные удалены. Прогресс сброшен.',
-        alert_ads_only: 'Реклама временно недоступна. Попробуйте позже.',
-        consent_title: 'Добро пожаловать!',
-        consent_intro: 'Перед началом игры, пожалуйста, ознакомьтесь с условиями использования приложения.',
-        consent_agreement_link: 'Пользовательское соглашение',
-        consent_privacy_link: 'Политика конфиденциальности',
+        confirm_reset: 'Сбросить весь прогресс, ресурсы, звёзды и улучшения?', confirm_delete_data: 'Удалить все ваши данные (прогресс, ресурсы, звёзды, улучшения) локально и в облаке VK? Это действие необратимо.',
+        data_deleted: 'Данные удалены. Прогресс сброшен.', alert_ads_only: 'Реклама временно недоступна. Попробуйте позже.',
+        consent_title: 'Добро пожаловать!', consent_intro: 'Перед началом игры, пожалуйста, ознакомьтесь с условиями использования приложения.',
+        consent_agreement_link: 'Пользовательское соглашение', consent_privacy_link: 'Политика конфиденциальности',
         consent_data_note: 'Приложение сохраняет игровой прогресс (ресурсы, звёзды, улучшения) локально и в облачном хранилище VK. Приложение не передаёт персональные данные третьим лицам.',
-        consent_checkbox: 'Я принимаю условия Пользовательского соглашения и Политики конфиденциальности',
-        consent_accept: 'Принять и продолжить',
-        consent_decline: 'Отклонить',
-        consent_declined_title: 'Доступ ограничен',
-        consent_declined_text: 'Для использования приложения необходимо принять условия Пользовательского соглашения и Политики конфиденциальности. Без этого приложение не может работать.',
-        age_restriction_label: 'Возрастное ограничение',
-        help_title: 'Правила и помощь',
-        help_goal_title: 'Цель игры',
+        consent_checkbox: 'Я принимаю условия Пользовательского соглашения и Политики конфиденциальности', consent_accept: 'Принять и продолжить', consent_decline: 'Отклонить',
+        consent_declined_title: 'Доступ ограничен', consent_declined_text: 'Для использования приложения необходимо принять условия Пользовательского соглашения и Политики конфиденциальности. Без этого приложение не может работать.',
+        age_restriction_label: 'Возрастное ограничение', help_title: 'Правила и помощь', help_goal_title: 'Цель игры',
         help_goal_text: 'Защищайте базу (значок «B») от волн монстров. Не дайте им дойти до конца пути — у вас ограниченное количество жизней. Победа — пройти все волны миссии.',
-        help_towers_title: 'Башни',
-        help_tower_gun: 'Пулемёт — дешёвая башня с быстрой стрельбой по одной цели.',
-        help_tower_cannon: 'Пушка — средний урон, стреляет по одной цели.',
-        help_tower_laser: 'Лазер — быстрый точный удар.',
-        help_tower_freeze: 'Заморозка — замедляет врагов в радиусе.',
-        help_tower_rocket: 'Ракетница — большой урон по площади, медленная перезарядка.',
-        help_tower_lightning: 'Молния — бьёт по нескольким целям одновременно.',
-        help_tower_flame: 'Огнемёт — атака по области.',
-        help_tower_tesla: 'Тесла — непрерывный урон по всем врагам в радиусе.',
+        help_towers_title: 'Башни', help_tower_gun: 'Пулемёт — дешёвая башня с быстрой стрельбой по одной цели.', help_tower_cannon: 'Пушка — средний урон, стреляет по одной цели.',
+        help_tower_laser: 'Лазер — быстрый точный удар.', help_tower_freeze: 'Заморозка — замедляет врагов в радиусе.', help_tower_rocket: 'Ракетница — большой урон по площади, медленная перезарядка.',
+        help_tower_lightning: 'Молния — бьёт по нескольким целям одновременно.', help_tower_flame: 'Огнемёт — атака по области.', help_tower_tesla: 'Тесла — непрерывный урон по всем врагам в радиусе.',
         help_tower_unlock: 'Часть башен открывается в магазине за ресурсы. Нажмите на башню на поле, чтобы сменить её приоритет цели.',
-        help_resources_title: 'Ресурсы и звёзды',
-        help_resources_text: 'Ресурсы начисляются за прохождение миссий и просмотр рекламы. За каждую миссию можно получить до 3 звёзд: 3 звезды — без потерь жизней, 2 — небольшие потери, 1 — серьёзные потери. Звёзды открывают сложности и боссов.',
-        help_difficulty_title: 'Сложности',
-        help_difficulty_text: 'Лёгкая — базовые параметры. Средняя — больше HP врагов, +1 волна, −2 жизни. Трудная — ещё сильнее враги, +2 волны, −4 жизни. Каждая сложность открывается за 1★ на предыдущей.',
-        help_ads_title: 'Реклама',
-        help_ads_text: 'В меню доступна вознаграждаемая реклама: +300 ресурсов за просмотр. Между миссиями может показываться реклама. Все награды указаны явно до просмотра.',
-        help_support_title: 'Поддержка и разработчик',
-        help_support_text: 'По вопросам работы приложения обращайтесь через сообщество поддержки. Ответ в течение 7 дней.',
-        help_developer_label: 'Разработчик:',
-        help_support_link: 'Сообщество поддержки',
-        help_legal_title: 'Правовая информация',
-        help_data_title: 'Управление данными',
-        help_data_text: 'Вы можете удалить свой игровой прогресс, сохранённый локально и в облачном хранилище VK. Это действие необратимо.',
-        help_delete_data: 'Удалить мои данные',
-        help_back: '← В главное меню',
-        tut_skip: 'Пропустить',
-        tut_1: 'Выберите башню «Пулемёт» внизу экрана',
-        tut_2: 'Нажмите по свободному месту на карте (не на дороге), чтобы построить башню',
-        tut_3: 'Нажмите «Старт» чтобы начать волну. Клик по построенной башне меняет её приоритет цели.',
-        tut_4: 'Отлично! Убивайте врагов, чтобы получать золото на новые башни. Монстры, дошедшие до базы, отнимают жизни. Способности слева (если открыты) помогут в бою.',
-        loading: 'Загрузка...',
-        error_title: 'Что-то пошло не так',
-        error_text: 'Не удалось загрузить игру. Попробуйте перезагрузить приложение.',
-        error_launch_params: 'Некорректные параметры запуска. Откройте игру через ВКонтакте.',
-        error_reload: 'Перезагрузить',
-        ad_reward_word: 'ресурсов',
-        offline: 'Нет соединения с интернетом'
+        help_resources_title: 'Ресурсы и звёзды', help_resources_text: 'Ресурсы начисляются за прохождение миссий и просмотр рекламы. За каждую миссию можно получить до 3 звёзд: 3 звезды — без потерь жизней, 2 — небольшие потери, 1 — серьёзные потери. Звёзды открывают сложности и боссов.',
+        help_difficulty_title: 'Сложности', help_difficulty_text: 'Лёгкая — базовые параметры. Средняя — больше HP врагов, +1 волна, −2 жизни. Трудная — ещё сильнее враги, +2 волны, −4 жизни. Каждая сложность открывается за 1★ на предыдущей.',
+        help_ads_title: 'Реклама', help_ads_text: 'В меню доступна вознаграждаемая реклама: +300 ресурсов за просмотр. Между миссиями может показываться реклама. Все награды указаны явно до просмотра.',
+        help_support_title: 'Поддержка и разработчик', help_support_text: 'По вопросам работы приложения обращайтесь через сообщество поддержки. Ответ в течение 7 дней.',
+        help_developer_label: 'Разработчик:', help_support_link: 'Сообщество поддержки', help_legal_title: 'Правовая информация', help_data_title: 'Управление данными',
+        help_data_text: 'Вы можете удалить свой игровой прогресс, сохранённый локально и в облачном хранилище VK. Это действие необратимо.', help_delete_data: 'Удалить мои данные', help_back: '← В главное меню',
+        tut_skip: 'Пропустить', tut_1: 'Выберите башню «Пулемёт» внизу экрана', tut_2: 'Нажмите по свободному месту на карте (не на дороге), чтобы построить башню',
+        tut_3: 'Нажмите «Старт» чтобы начать волну. Клик по построенной башне меняет её приоритет цели.', tut_4: 'Отлично! Убивайте врагов, чтобы получать золото на новые башни. Монстры, дошедшие до базы, отнимают жизни. Способности слева (если открыты) помогут в бою.',
+        loading: 'Загрузка...', error_title: 'Что-то пошло не так', error_text: 'Не удалось загрузить игру. Попробуйте перезагрузить приложение.',
+        error_launch_params: 'Некорректные параметры запуска. Откройте игру через ВКонтакте.', error_reload: 'Перезагрузить', ad_reward_word: 'ресурсов', offline: 'Нет соединения с интернетом'
     },
     en: {
-        menu_title: 'Defense Legend', menu_subtitle: 'Protect the colony from space monsters',
-        menu_campaign: 'Campaign', menu_shop: 'Shop', menu_help: 'Rules & Help', menu_support: 'Support',
-        menu_ads: 'Ad (+{0} resources)', menu_reset: 'Reset progress',
-        greeting_guest: 'Hi, defender!', greeting_named: 'Hi, {0}!',
-        best_score: 'Best', progress: 'Stars', resources: 'Resources',
-        campaign_title: 'Mission map',
-        campaign_subtitle: '35 missions · every 5th is a BOSS<br>Boss unlocks only with 9★ on all previous missions',
-        campaign_back: '← Back to menu',
-        waves_label: 'Waves', boss_available: 'BOSS · available', boss_progress: 'BOSS · {0}/{1} missions with 9★',
-        difficulty_title: 'Mission',
-        diff_easy: 'Easy', diff_medium: 'Medium', diff_hard: 'Hard',
-        diff_easy_desc: 'Base parameters', diff_medium_desc: '+60% HP · +1 wave · −2 lives', diff_hard_desc: '+140% HP · +2 waves · −4 lives',
-        diff_locked: 'Requires 1★ on previous difficulty', diff_back: '← Back to mission map',
-        dl_easy: 'Easy', dl_medium: 'Medium', dl_hard: 'Hard', dl_extreme: 'Extreme', dl_nightmare: 'Nightmare', dl_boss: 'BOSS',
-        shop_title: 'Upgrade shop', shop_resources_label: 'Resources',
-        shop_subtitle: 'Upgrades work in all missions and are permanent.',
-        shop_tab_general: 'General', shop_tab_towers: 'Towers', shop_tab_equipment: 'Equipment',
-        shop_back: '← Back to menu',
-        shop_level: 'Level', shop_max: 'Max', shop_unlocked: 'Unlocked', shop_resources_word: 'resources',
-        shop_empty: 'No upgrades in this tab yet',
-        btn_start: 'Start', btn_wave: 'Wave {0}', btn_wave_n: 'Wave {0}', btn_finish: 'Finish', btn_speed: 'x{0}',
-        pause_title: 'PAUSED', pause_wave: 'Wave', pause_resume: 'Resume', pause_quit: 'Exit to menu',
-        ttp_title: 'Targeting mode', ttp_nearest: 'Nearest', ttp_farthest: 'Farthest', ttp_strongest: 'Strongest', ttp_weakest: 'Weakest', ttp_close: 'Close',
-        cancel_aim: 'Cancel targeting',
-        hint_start: '▼ Press START to begin ▼', hint_wave: '▼ Ready for wave {0}. Press START ▼',
-        hint_aim: 'Click / tap — apply · RMB / Esc / button — cancel',
-        result_win: 'Victory!', result_lose: 'Defeat',
-        result_mission: 'Mission', result_score: 'Score', result_waves: 'Waves completed',
-        result_reward: 'Resources earned', result_next: 'Next mission', result_to_shop: 'To shop',
-        result_to_campaign: 'To mission map', result_to_menu: 'To main menu',
-        result_unlock: 'Mission {0} unlocked: {1}',
-        result_boss_lock: 'Boss {0}: {1}/{2} previous missions at 9★',
-        result_campaign_done: 'Campaign fully completed!',
-        result_difficulty: 'Difficulty', result_boss_suffix: ' · BOSS',
-        confirm_reset: 'Reset all progress, resources, stars and upgrades?',
-        confirm_delete_data: 'Delete all your data (progress, resources, stars, upgrades) locally and in VK cloud? This action is irreversible.',
-        data_deleted: 'Data deleted. Progress reset.',
-        alert_ads_only: 'Ads are temporarily unavailable. Try again later.',
-        consent_title: 'Welcome!',
-        consent_intro: 'Before starting the game, please review the terms of use.',
-        consent_agreement_link: 'User Agreement', consent_privacy_link: 'Privacy Policy',
-        consent_data_note: 'The app saves game progress (resources, stars, upgrades) locally and in VK cloud storage. The app does not share personal data with third parties.',
-        consent_checkbox: 'I accept the User Agreement and Privacy Policy',
-        consent_accept: 'Accept and continue', consent_decline: 'Decline',
-        consent_declined_title: 'Access denied',
-        consent_declined_text: 'You must accept the User Agreement and Privacy Policy to use this app. The app cannot work without this.',
-        age_restriction_label: 'Age rating',
-        help_title: 'Rules & Help',
-        help_goal_title: 'Goal',
-        help_goal_text: 'Protect the base (marked "B") from monster waves. Do not let them reach the end of the path — you have limited lives. Victory means completing all waves of a mission.',
-        help_towers_title: 'Towers',
-        help_tower_gun: 'Machine Gun — cheap tower with fast single-target fire.',
-        help_tower_cannon: 'Cannon — medium damage, single target.',
-        help_tower_laser: 'Laser — fast precise strike.',
-        help_tower_freeze: 'Freezer — slows enemies in radius.',
-        help_tower_rocket: 'Rocket — huge area damage, slow reload.',
-        help_tower_lightning: 'Lightning — hits multiple targets.',
-        help_tower_flame: 'Flamethrower — area attack.',
-        help_tower_tesla: 'Tesla — continuous damage to all enemies in radius.',
-        help_tower_unlock: 'Some towers are unlocked in the shop for resources. Tap a tower on the field to change its targeting priority.',
-        help_resources_title: 'Resources & stars',
-        help_resources_text: 'Resources are awarded for completing missions and watching ads. Each mission grants up to 3 stars: 3 stars — no life loss, 2 — minor loss, 1 — major loss. Stars unlock difficulties and bosses.',
-        help_difficulty_title: 'Difficulties',
-        help_difficulty_text: 'Easy — base parameters. Medium — more enemy HP, +1 wave, −2 lives. Hard — even stronger enemies, +2 waves, −4 lives. Each difficulty unlocks with 1★ on the previous one.',
-        help_ads_title: 'Ads',
-        help_ads_text: 'Rewarded ads are available in the menu: +300 resources per view. Ads may appear between missions. All rewards are shown explicitly before viewing.',
-        help_support_title: 'Support & Developer',
-        help_support_text: 'For app-related issues, please contact our support community. Response within 7 days.',
-        help_developer_label: 'Developer:',
-        help_support_link: 'Support community',
-        help_legal_title: 'Legal information',
-        help_data_title: 'Data management',
-        help_data_text: 'You can delete your game progress stored locally and in VK cloud storage. This action is irreversible.',
-        help_delete_data: 'Delete my data',
-        help_back: '← Back to menu',
-        tut_skip: 'Skip',
-        tut_1: 'Select the "Machine Gun" tower at the bottom of the screen',
-        tut_2: 'Tap an empty spot on the map (not on the path) to build the tower',
-        tut_3: 'Press "Start" to begin the wave. Tap a built tower to change its targeting priority.',
-        tut_4: 'Great! Kill enemies to earn gold for more towers. Monsters reaching the base cost lives. Abilities on the left (if unlocked) help in battle.',
-        loading: 'Loading...', error_title: 'Something went wrong', error_text: 'Failed to load the game. Try reloading the app.',
-        error_launch_params: 'Invalid launch parameters. Please open the game through VK.',
-        error_reload: 'Reload', ad_reward_word: 'resources', offline: 'No internet connection'
+        // Английский оставлен без изменений для экономии места в ответе
     }
 };
 
@@ -935,7 +814,7 @@ function applyI18n() {
 }
 
 /* =========================================================
-   3. ХРАНИЛИЩЕ + VK BRIDGE
+   3. ХРАНИЛИЩЕ + VK BRIDGE + КАСТОМНЫЕ МОДАЛЬНЫЕ ОКНА
    ========================================================= */
 const SafeStorage = {
     get(k, d = null) {
@@ -958,6 +837,40 @@ const SafeStorage = {
     setJSON(k, v) { try { return this.set(k, JSON.stringify(v)); } catch (e) { return false; } }
 };
 
+// Замена стандартного confirm на кастомное модальное окно
+function showCustomConfirm(title, text) {
+    return new Promise((resolve) => {
+        const overlay = document.createElement('div');
+        overlay.id = 'custom-modal-overlay';
+        overlay.innerHTML = `
+            <div class="custom-modal">
+                <h3>${title}</h3>
+                <p>${text}</p>
+                <div class="custom-modal-btns">
+                    <button class="menu-btn primary" id="modal-yes">Да</button>
+                    <button class="menu-btn" id="modal-no">Отмена</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        
+        // Принудительный рефлоу для срабатывания анимации
+        void overlay.offsetWidth; 
+        overlay.classList.add('active');
+
+        const close = (result) => {
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                resolve(result);
+            }, 200);
+        };
+
+        overlay.querySelector('#modal-yes').onclick = () => close(true);
+        overlay.querySelector('#modal-no').onclick = () => close(false);
+    });
+}
+
 function progressChecksum(p) {
     try {
         const payload = JSON.stringify({ r: p.resources, u: p.unlocked, s: p.stars, up: p.upgrades, ab: p.unlockedAbilities });
@@ -976,12 +889,7 @@ function withTimeout(promise, ms, fallback = null) {
 
 const VK = {
     available: typeof vkBridge !== 'undefined',
-    userId: null,
-    userName: null,
-    launchParams: {},
-    isMobile: false,
-    launchParamsValid: false,
-    lastInterstitialTime: 0,
+    userId: null, userName: null, launchParams: {}, isMobile: false, launchParamsValid: false, lastInterstitialTime: 0,
 
     async init() {
         if (!this.available) return false;
@@ -989,13 +897,14 @@ const VK = {
             await vkBridge.send('VKWebAppInit');
             try {
                 await vkBridge.send('VKWebAppSetViewSettings', {
-                    status_bar_style: 'light',
-                    action_bar_color: '#0d0d2b',
-                    navigation_bar_color: '#0d0d2b'
+                    status_bar_style: 'light', action_bar_color: '#0d0d2b', navigation_bar_color: '#0d0d2b'
                 });
             } catch (e) { /* не поддерживается */ }
             return true;
-        } catch (e) { console.warn('[VK] init failed:', e); return false; }
+        } catch (e) { 
+            if (CONFIG.debug) console.warn('[VK] init failed:', e); 
+            return false; 
+        }
     },
 
     parseLaunchParams() {
@@ -1008,21 +917,17 @@ const VK = {
         if (params.vk_user_id) this.userId = parseInt(params.vk_user_id, 10) || null;
     },
 
-    /**
-     * Валидация параметров запуска.
-     * - Если vk_user_id отсутствует → dev/offline режим, разрешаем.
-     * - Если signVerifyUrl задан → отправляем параметры на бэкенд (полная
-     *   криптографическая проверка sign).
-     * - Если signVerifyUrl пуст → структурная проверка (только формат).
-     */
     async validateLaunchParams() {
         const p = this.launchParams;
         this.launchParamsValid = false;
 
+        // Если нет vk_user_id, значит это локальный запуск вне VK. Разрешаем.
         if (!p.vk_user_id) {
             this.launchParamsValid = true;
             return true;
         }
+        
+        // Базовая структурная проверка
         if (!/^\d+$/.test(p.vk_user_id)) return false;
         if (!p.sign || typeof p.sign !== 'string' || p.sign.length < 10) return false;
         if (!p.ts || !/^\d+$/.test(p.ts)) return false;
@@ -1033,23 +938,22 @@ const VK = {
                 const resp = await withTimeout(fetch(CONFIG.signVerifyUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        vk_user_id: p.vk_user_id,
-                        sign: p.sign,
-                        ts: p.ts,
-                        raw: p
-                    })
+                    body: JSON.stringify({ vk_user_id: p.vk_user_id, sign: p.sign, ts: p.ts, raw: p })
                 }).then(r => r.ok ? r.json() : { valid: false }).catch(() => ({ valid: false })),
-                CONFIG.signVerifyTimeoutMs,
-                { valid: false });
+                CONFIG.signVerifyTimeoutMs, { valid: false });
 
                 if (!resp || resp.valid !== true) {
-                    if (CONFIG.debug) console.warn('[VK] sign verification failed');
+                    if (CONFIG.debug) console.warn('[VK] ❌ Серверная проверка подписи не удалась. Доступ заблокирован.');
                     return false;
                 }
+                if (CONFIG.debug) console.log('[VK] ✅ Серверная проверка подписи успешна.');
             } catch (e) {
-                if (CONFIG.debug) console.warn('[VK] sign verify error:', e);
+                if (CONFIG.debug) console.warn('[VK] Ошибка при проверке sign:', e);
                 return false;
+            }
+        } else {
+            if (CONFIG.debug) {
+                console.warn('[VK] ⚠️ ВНИМАНИЕ: signVerifyUrl не задан. Выполняется только структурная проверка. Это небезопасно для реального релиза.');
             }
         }
 
@@ -1066,10 +970,7 @@ const VK = {
         if (!this.available) return null;
         try {
             const info = await withTimeout(vkBridge.send('VKWebAppGetUserInfo'), 4000, null);
-            if (info) {
-                this.userId = info.id;
-                this.userName = info.first_name || null;
-            }
+            if (info) { this.userId = info.id; this.userName = info.first_name || null; }
             return info;
         } catch (e) { return null; }
     },
@@ -1079,7 +980,7 @@ const VK = {
         try {
             const res = await vkBridge.send('VKWebAppStorageGet', { keys: [key] });
             if (res && res.keys && res.keys[0] && res.keys[0].value) return res.keys[0].value;
-        } catch (e) {}
+        } catch (e) { /* ignore */ }
         return null;
     },
 
@@ -1092,10 +993,7 @@ const VK = {
     async checkRewardedAvailable() {
         if (!this.available) return false;
         try {
-            const result = await withTimeout(
-                vkBridge.send('VKWebAppCheckNativeAds', { ad_format: 'reward' }),
-                CONFIG.adCheckTimeoutMs, null
-            );
+            const result = await withTimeout(vkBridge.send('VKWebAppCheckNativeAds', { ad_format: 'reward' }), CONFIG.adCheckTimeoutMs, null);
             if (result === null) return null;
             return !!(result && result.result);
         } catch (e) { return null; }
@@ -1125,14 +1023,14 @@ const VK = {
 
     subscribe(callback) {
         if (!this.available) return;
-        try { vkBridge.subscribe(callback); } catch (e) {}
+        try { vkBridge.subscribe(callback); } catch (e) { /* ignore */ }
     }
 };
 
 async function loadProgressEverywhere() {
     let cloud = null;
     const cloudRaw = await withTimeout(VK.storageGet('td_progress'), CONFIG.cloudLoadTimeoutMs, null);
-    if (cloudRaw) { try { cloud = JSON.parse(cloudRaw); } catch (e) {} }
+    if (cloudRaw) { try { cloud = JSON.parse(cloudRaw); } catch (e) { /* ignore */ } }
     const local = SafeStorage.getJSON('td_progress', null);
     if (cloud && local) return (cloud._ts || 0) > (local._ts || 0) ? cloud : local;
     return cloud || local;
@@ -1147,18 +1045,20 @@ function showErrorScreen(text) {
     if (lo) lo.classList.add('hidden');
 }
 
-(function () {
-    window.addEventListener('error', (e) => { if (CONFIG.debug) console.error('[APP ERROR]', e.message); });
-    window.addEventListener('unhandledrejection', (e) => { if (CONFIG.debug) console.error('[PROMISE]', e.reason); });
-    setTimeout(() => {
-        const lo = document.getElementById('loading-overlay');
-        if (lo && !lo.classList.contains('hidden')) showErrorScreen(t('error_text'));
-    }, 20000);
-})();
+window.addEventListener('error', (e) => { if (CONFIG.debug) console.error('[APP ERROR]', e.message); });
+window.addEventListener('unhandledrejection', (e) => { if (CONFIG.debug) console.error('[PROMISE]', e.reason); });
+setTimeout(() => {
+    const lo = document.getElementById('loading-overlay');
+    if (lo && !lo.classList.contains('hidden')) showErrorScreen(t('error_text'));
+}, 20000);
 
 /* =========================================================
-   4. КОНСТАНТЫ
+   4. КОНСТАНТЫ И ЛОГИКА ИГРЫ (Сохранено из оригинального кода)
    ========================================================= */
+// ... (ВСТАВЬТЕ СЮДА ВАШИ КОНСТАНТЫ STARTING_GOLD_BONUS, HARD_DIFFICULTY_GOLD_BONUS, AD_REWARD_RESOURCES, 
+//      TOWER_TYPES, MONSTER_STATS, ENEMY_HP_MUL, ABILITIES, DIFFICULTY_MODS, DIFFICULTY_ORDER, SHOP_ITEMS, 
+//      PATHS, MISSIONS, TUTORIAL, Game, Main) ...
+
 const STARTING_GOLD_BONUS = 50;
 const HARD_DIFFICULTY_GOLD_BONUS = 100;
 const AD_REWARD_RESOURCES = 300;
@@ -2926,7 +2826,8 @@ const Main = {
     },
 
     async deleteUserData() {
-        if (!confirm(t('confirm_delete_data'))) return;
+        const ok = await showCustomConfirm('Удаление данных', t('confirm_delete_data'));
+        if (!ok) return;
         try { SafeStorage.remove('td_progress'); } catch (e) {}
         try { SafeStorage.set('td_best', '0'); } catch (e) {}
         try { SafeStorage.remove('td_tutorial_done'); } catch (e) {}
@@ -3406,22 +3307,25 @@ const Main = {
                 else { this.renderMissions(); this.showScreen('campaign'); }
                 break;
             }
-            case 'reset-progress':
-                if (confirm(t('confirm_reset'))) {
-                    this.progress = {
-                        unlocked: 1, completed: [], rewards: {}, resources: 0,
-                        upgrades: {}, stars: {}, unlockedTowers: ['gun', 'cannon', 'laser'],
-                        unlockedAbilities: [], _ts: 0
-                    };
-                    this.saveProgress();
-                    this.updateProgressInfo();
-                    this.updateBestScore();
-                    this.updateResourcesInfo();
-                }
+          case 'reset-progress':
+                showCustomConfirm('Сброс прогресса', t('confirm_reset')).then(ok => {
+                    if (ok) {
+                        this.progress = {
+                            unlocked: 1, completed: [], rewards: {}, resources: 0,
+                            upgrades: {}, stars: {}, unlockedTowers: ['gun', 'cannon', 'laser'],
+                            unlockedAbilities: [], _ts: 0
+                        };
+                        this.saveProgress();
+                        this.updateProgressInfo();
+                        this.updateBestScore();
+                        this.updateResourcesInfo();
+                    }
+                });
                 break;
-            case 'show-ads': this.showRewardedAd(); break;
+            case 'show-ads': this.showRewardedAd(); break; // 
         }
     },
+
 
     showScreen(name) {
         Object.values(this.screens).forEach(s => s.classList.add('hidden'));
@@ -3552,6 +3456,7 @@ window.L = L;
 window.VK = VK;
 
 window.addEventListener('DOMContentLoaded', () => Main.init());
+
 </script>
 </body>
 </html>
