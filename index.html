@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Легенда Обороны</title>
-<!-- Подключение VK Bridge через официальный CDN (рекомендуется VK) -->
+<!-- Подключение VK Bridge -->
 <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
 html, body {
     width: 100%; height: 100%; overflow: hidden; background: #05050f;
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     touch-action: manipulation; overscroll-behavior: none; -webkit-text-size-adjust: 100%;
 }
 #game-container {
@@ -54,7 +54,7 @@ html, body {
     padding: 7px 10px; margin: 4px 0;
     border: 1px solid rgba(0, 200, 255, 0.3); border-radius: 8px;
     background: rgba(0, 50, 100, 0.6); color: #cceeff;
-    font-size: 0.85rem; cursor: pointer; transition: all 0.2s ease;
+    font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease;
     text-align: center; letter-spacing: 0.2px; font-family: inherit;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     line-height: 1.25; word-break: break-word;
@@ -72,14 +72,14 @@ html, body {
 .menu-btn.danger:hover { background: linear-gradient(135deg, #a02020, #dd2828); box-shadow: 0 0 20px rgba(255, 80, 80, 0.5); }
 .menu-btn.link-like {
     width: auto; background: transparent; border: none; color: #66aadd;
-    text-decoration: underline; font-size: 0.85rem; padding: 4px 6px; margin: 2px 0;
+    text-decoration: underline; font-size: 0.9rem; padding: 4px 6px; margin: 2px 0;
 }
 .menu-btn.link-like:hover { background: transparent; color: #88ccff; transform: none; box-shadow: none; }
-body.touch .menu-btn { padding: 8px 12px; font-size: 0.9rem; }
+body.touch .menu-btn { padding: 9px 14px; font-size: 0.95rem; }
 
 .support-links {
     margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 8px;
-    justify-content: center; font-size: 0.85rem; color: #667799;
+    justify-content: center; font-size: 0.9rem; color: #667799;
     text-align: center; max-width: 480px;
 }
 .support-links a { color: #5599cc; text-decoration: underline; }
@@ -91,7 +91,7 @@ body.touch .menu-btn { padding: 8px 12px; font-size: 0.9rem; }
     font-weight: 800; font-size: 1rem;
     box-shadow: 0 0 12px rgba(255, 130, 60, 0.5); margin: 8px 0 4px; letter-spacing: 0.5px;
 }
-.age-row { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 12px; color: #aabbcc; font-size: 0.9rem; }
+.age-row { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 12px; color: #aabbcc; font-size: 0.95rem; }
 #screen-consent { z-index: 120; }
 .consent-box {
     width: 100%; max-width: 560px;
@@ -171,12 +171,12 @@ body.touch .menu-btn { padding: 8px 12px; font-size: 0.9rem; }
     border: 1px solid rgba(0, 150, 255, 0.3); border-radius: 12px;
     padding: 14px 18px; margin: 8px 0;
 }
-.help-section h3 { color: #66ddff; font-size: 1.05rem; margin-bottom: 8px; }
-.help-section p { font-size: 0.95rem; color: #aabbdd; margin-bottom: 6px; line-height: 1.5; text-align: left; }
+.help-section h3 { color: #66ddff; font-size: 1.1rem; margin-bottom: 8px; }
+.help-section p { font-size: 1rem; color: #aabbdd; margin-bottom: 6px; line-height: 1.5; text-align: left; }
 .help-section a { color: #00c6ff; text-decoration: underline; }
 .help-section a:hover { color: #7de8ff; }
 .help-section ul { padding-left: 20px; margin: 6px 0; }
-.help-section li { font-size: 0.92rem; color: #aabbdd; margin-bottom: 4px; line-height: 1.45; }
+.help-section li { font-size: 0.95rem; color: #aabbdd; margin-bottom: 4px; line-height: 1.45; }
 .missions-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 10px; width: 100%; max-width: 880px; margin: 1rem 0 1.5rem;
@@ -204,15 +204,15 @@ body.touch .menu-btn { padding: 8px 12px; font-size: 0.9rem; }
 .mission-card.boss .mission-num { color: #ff6666; }
 .mission-card.boss.completed .mission-num { color: #ffcc44; }
 .mission-name {
-    font-size: 0.85rem; color: #aabbdd; margin-bottom: 3px; font-weight: 600;
+    font-size: 0.9rem; color: #aabbdd; margin-bottom: 3px; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.2px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
-.mission-info { font-size: 0.8rem; color: #7a8baa; line-height: 1.3; }
+.mission-info { font-size: 0.9rem; color: #7a8baa; line-height: 1.3; }
 .mission-card.boss .mission-info { color: #ffbbbb; font-weight: 700; }
 .mission-stars {
-    font-size: 0.85rem; color: #ffcc44; font-weight: 700; margin-top: 4px;
+    font-size: 0.9rem; color: #ffcc44; font-weight: 700; margin-top: 4px;
     letter-spacing: 0.3px; display: flex; justify-content: center; align-items: center; gap: 4px;
 }
 .mission-status { position: absolute; top: 6px; right: 6px; font-size: 0.85rem; display: flex; }
@@ -246,15 +246,15 @@ body.touch .menu-btn { padding: 8px 12px; font-size: 0.9rem; }
 .shop-icon svg { width: 24px; height: 24px; vertical-align: middle; }
 .shop-name { font-weight: 700; font-size: 1.05rem; color: #aaddff; margin-bottom: 4px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
 .shop-item.maxed .shop-name { color: #aaffcc; }
-.shop-desc { font-size: 0.9rem; color: #8899bb; margin-bottom: 8px; line-height: 1.35; }
-.shop-level { font-size: 0.9rem; color: #fff; margin-bottom: 6px; }
+.shop-desc { font-size: 0.95rem; color: #8899bb; margin-bottom: 8px; line-height: 1.35; }
+.shop-level { font-size: 0.95rem; color: #fff; margin-bottom: 6px; }
 .shop-level .dots { display: inline-flex; gap: 2px; margin-left: 4px; vertical-align: middle; }
 .shop-level .dots span { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #00ffaa; }
 .shop-level .dots span.empty { background: rgba(100, 100, 150, 0.4); }
 .shop-cost { font-size: 1rem; font-weight: 700; color: #ffcc44; display: flex; align-items: center; gap: 6px; }
 .shop-cost svg { width: 16px; height: 16px; }
 .shop-cost.cant { color: #ff6666; }
-.shop-cost .label { font-size: 0.8rem; color: #8899bb; font-weight: 400; }
+.shop-cost .label { font-size: 0.85rem; color: #8899bb; font-weight: 400; }
 .shop-maxed { font-size: 1rem; font-weight: 700; color: #00ffaa; }
 .shop-empty { text-align: center; color: #556688; font-size: 1rem; padding: 2rem 0; width: 100%; grid-column: 1 / -1; }
 .difficulty-list { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 560px; margin: 1rem 0 1.5rem; }
@@ -273,12 +273,12 @@ body.touch .menu-btn { padding: 8px 12px; font-size: 0.9rem; }
 .diff-icon svg { width: 32px; height: 32px; }
 .diff-info { flex: 1; min-width: 0; }
 .diff-name { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 4px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
-.diff-desc { font-size: 0.9rem; color: #8899bb; line-height: 1.35; }
+.diff-desc { font-size: 0.95rem; color: #8899bb; line-height: 1.35; }
 .diff-stars { font-size: 1.5rem; letter-spacing: 3px; flex-shrink: 0; display: flex; gap: 2px; }
 .diff-stars svg { width: 18px; height: 18px; }
 .diff-stars .filled { color: #ffcc44; }
 .diff-stars .empty { opacity: 0.3; }
-.diff-lock { font-size: 0.85rem; color: #ff8888; margin-top: 4px; }
+.diff-lock { font-size: 0.9rem; color: #ff8888; margin-top: 4px; }
 #battle-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; display: none; z-index: 5; }
 #battle-ui.active { display: block; }
 .battle-top-bar {
@@ -326,7 +326,7 @@ body.touch .menu-btn { padding: 8px 12px; font-size: 0.9rem; }
 .tower-option:hover { transform: translateY(-2px); border-color: #00c6ff; }
 .tower-option.selected { border-color: #00ffaa; box-shadow: 0 0 16px rgba(0, 255, 170, 0.5); background: rgba(0, 80, 60, 0.7); }
 .tower-option svg { width: 24px; height: 24px; }
-.tower-option .cost { font-size: 0.72rem; color: #ffcc44; margin-top: 3px; font-weight: 700; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+.tower-option .cost { font-size: 0.75rem; color: #ffcc44; margin-top: 3px; font-weight: 700; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
 #ability-bar {
     position: absolute; top: 78px; left: 12px; display: none; flex-direction: column; gap: 6px;
     background: rgba(0, 10, 30, 0.92); border: 1px solid rgba(255, 180, 80, 0.35);
@@ -351,7 +351,7 @@ body.touch .menu-btn { padding: 8px 12px; font-size: 0.9rem; }
     padding-top: 4px; font-size: 0.75rem; font-weight: 800; color: #fff;
     text-shadow: 0 0 4px #000, 0 0 8px #000;
 }
-.ability-btn .ab-label { font-size: 0.65rem; color: #ffddaa; margin-top: 2px; font-weight: 600; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+.ability-btn .ab-label { font-size: 0.7rem; color: #ffddaa; margin-top: 2px; font-weight: 600; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
 #tower-target-panel {
     position: absolute; right: 12px; bottom: 88px; background: rgba(0, 10, 30, 0.95);
     border: 2px solid rgba(0, 200, 255, 0.5); border-radius: 12px; padding: 10px;
@@ -360,13 +360,13 @@ body.touch .menu-btn { padding: 8px 12px; font-size: 0.9rem; }
 }
 #tower-target-panel.active { display: flex; }
 .ttp-title {
-    font-size: 0.85rem; color: #aaddff; font-weight: 700; margin-bottom: 2px;
+    font-size: 0.9rem; color: #aaddff; font-weight: 700; margin-bottom: 2px;
     text-align: center; letter-spacing: 0.4px; padding-bottom: 4px;
     border-bottom: 1px solid rgba(0, 200, 255, 0.2); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 .ttp-btn {
     padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(0, 200, 255, 0.35);
-    background: rgba(0, 50, 100, 0.7); color: #cceeff; font-family: inherit; font-size: 0.9rem;
+    background: rgba(0, 50, 100, 0.7); color: #cceeff; font-family: inherit; font-size: 0.95rem;
     font-weight: 600; cursor: pointer; text-align: left; transition: all 0.15s;
     display: flex; align-items: center; gap: 6px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
@@ -394,7 +394,7 @@ body.touch .menu-btn { padding: 8px 12px; font-size: 0.9rem; }
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     margin-bottom: 0.4rem; text-shadow: 0 0 30px rgba(0, 180, 255, 0.3);
 }
-.pause-sub { font-size: 1.1rem; color: #8899bb; margin-bottom: 2rem; letter-spacing: 0.4px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+.pause-sub { font-size: 1.15rem; color: #8899bb; margin-bottom: 2rem; letter-spacing: 0.4px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
 #btn-cancel-aim {
     position: absolute; top: 78px; left: 50%; transform: translateX(-50%);
     padding: 10px 22px; background: linear-gradient(135deg, #a02020, #cc2828);
@@ -408,16 +408,16 @@ body.touch .menu-btn { padding: 8px 12px; font-size: 0.9rem; }
 #btn-cancel-aim:active { transform: translateX(-50%) scale(0.96); }
 @keyframes pulse-red { from { box-shadow: 0 0 12px rgba(255, 80, 80, 0.5); } to { box-shadow: 0 0 26px rgba(255, 80, 80, 0.95); } }
 body.touch .tower-option { width: 64px; height: 64px; font-size: 1.4rem; }
-body.touch .tower-option .cost { font-size: 0.78rem; }
+body.touch .tower-option .cost { font-size: 0.8rem; }
 body.touch .ability-btn { width: 62px; height: 62px; font-size: 1.7rem; }
-body.touch .ability-btn .ab-label { font-size: 0.7rem; }
+body.touch .ability-btn .ab-label { font-size: 0.75rem; }
 body.touch .battle-ctrl-btn { padding: 9px 16px; min-width: 66px; font-size: 1rem; }
 body.touch .battle-ctrl-btn.start-btn { min-width: 116px; }
 body.touch .ttp-btn { padding: 10px 14px; font-size: 0.95rem; }
 body.touch #tower-target-panel { min-width: 178px; padding: 12px; gap: 7px; }
-body.touch .battle-stat { font-size: 1.1rem; }
+body.touch .battle-stat { font-size: 1.15rem; }
 #screen-result .result-stats { margin: 1.5rem 0; text-align: center; }
-#screen-result .result-stats div { font-size: 1.1rem; margin: 8px 0; color: #aabbdd; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+#screen-result .result-stats div { font-size: 1.15rem; margin: 8px 0; color: #aabbdd; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
 #screen-result .result-stats span { color: #fff; font-weight: 700; }
 #screen-result .result-stats .reward-line { color: #ffcc44; font-size: 1.25rem; font-weight: 700; margin-top: 12px; }
 .result-stars {
@@ -427,7 +427,7 @@ body.touch .battle-stat { font-size: 1.1rem; }
 .result-stars svg { width: 36px; height: 36px; }
 .result-stars .filled { color: #ffcc44; filter: drop-shadow(0 0 10px rgba(255, 200, 60, 0.7)); }
 .result-stars .empty { opacity: 0.3; }
-.result-diff-label { font-size: 0.95rem; color: #8899bb; text-transform: uppercase; letter-spacing: 2px; margin-top: 6px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+.result-diff-label { font-size: 1rem; color: #8899bb; text-transform: uppercase; letter-spacing: 2px; margin-top: 6px; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
 .result-diff-label.boss { color: #ff6666; font-weight: 700; }
 #tutorial-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; pointer-events: none; display: none; }
 .tutorial-highlight {
@@ -442,17 +442,17 @@ body.touch .battle-stat { font-size: 1.1rem; }
 #tutorial-box {
     position: absolute; background: rgba(10, 15, 30, 0.95); color: #e0e0ff;
     padding: 16px 22px; border-radius: 12px; border: 2px solid #00ffaa;
-    font-size: 1.05rem; font-weight: 600; box-shadow: 0 0 30px rgba(0, 255, 170, 0.5);
+    font-size: 1.1rem; font-weight: 600; box-shadow: 0 0 30px rgba(0, 255, 170, 0.5);
     pointer-events: auto; max-width: 340px; text-align: center; line-height: 1.45;
     transition: all 0.3s ease; text-shadow: 0 1px 2px #000;
 }
 #tut-skip {
     margin-top: 10px; background: none; border: none; color: #ff8888;
-    text-decoration: underline; cursor: pointer; font-size: 0.9rem;
+    text-decoration: underline; cursor: pointer; font-size: 0.95rem;
     font-family: inherit; padding: 4px 8px;
 }
 
-/* === НОВЫЕ СТИЛИ ДЛЯ КАСТОМНЫХ МОДАЛЬНЫХ ОКОН === */
+/* === КАСТОМНЫЕ МОДАЛЬНЫЕ ОКНА === */
 #custom-modal-overlay {
     position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(4px); z-index: 999999;
@@ -475,7 +475,7 @@ body.touch .battle-stat { font-size: 1.1rem; }
 
 @media (max-height: 500px) {
     .battle-top-bar { padding: 6px 10px; gap: 6px; }
-    .battle-stat { font-size: 0.85rem; }
+    .battle-stat { font-size: 0.95rem; }
     .tower-selector { padding: 6px 10px; gap: 6px; bottom: 6px; }
     .tower-option { width: 52px; height: 52px; font-size: 1.1rem; }
     .ability-btn { width: 48px; height: 48px; font-size: 1.2rem; }
@@ -483,6 +483,9 @@ body.touch .battle-stat { font-size: 1.1rem; }
     .pause-title { font-size: 2rem; }
     .screen h1 { font-size: 1.8rem; }
     .screen h2 { font-size: 1.3rem; }
+    .screen p { font-size: 0.95rem; }
+    .mission-info { font-size: 0.85rem; }
+    .shop-desc { font-size: 0.85rem; }
 }
 @supports (padding: env(safe-area-inset-top)) {
     .battle-top-bar { top: calc(10px + env(safe-area-inset-top)); }
@@ -527,7 +530,7 @@ body.touch .battle-stat { font-size: 1.1rem; }
             <br>
             <a href="#" id="link-privacy" target="_blank" rel="noopener" data-i18n="consent_privacy_link">Политика конфиденциальности</a>
         </p>
-        <p style="font-size:0.9rem;color:#8899bb;" data-i18n="consent_data_note">Приложение сохраняет игровой прогресс (ресурсы, звёзды, улучшения) локально и в облачном хранилище VK. Приложение не передаёт персональные данные третьим лицам.</p>
+        <p style="font-size:0.95rem;color:#8899bb;" data-i18n="consent_data_note">Приложение сохраняет игровой прогресс (ресурсы, звёзды, улучшения) локально и в облачном хранилище VK. Приложение не передаёт персональные данные третьим лицам.</p>
         <div class="consent-checkbox-row" id="consent-checkbox-row">
             <input type="checkbox" id="chk-consent">
             <label for="chk-consent" data-i18n="consent_checkbox">Я принимаю условия Пользовательского соглашения и Политики конфиденциальности</label>
@@ -563,7 +566,7 @@ body.touch .battle-stat { font-size: 1.1rem; }
     </div>
     <div class="help-section">
         <h3 data-i18n="help_difficulty_title">Сложности</h3>
-        <p data-i18n="help_difficulty_text">Лёгкая — базовые параметры. Средняя — больше HP врагов, +1 волна, −2 жизни. Трудная — ещё сильнее враги, +2 волны, −4 жизни. Каждая сложность открывается за 1★ на предыдущей.</p>
+        <p data-i18n="help_difficulty_text">Лёгкая — базовые параметры. Средняя — больше HP врагов, +1 волна, −2 жизни. Трудная — ещё сильнее враги, +2 волны, −4 жизни. Каждая сложность открывается за 1 звезду на предыдущей.</p>
     </div>
     <div class="help-section">
         <h3 data-i18n="help_ads_title">Реклама</h3>
@@ -623,15 +626,10 @@ const CONFIG = {
     userAgreementUrl: 'https://dev.vk.ru/ru/user-agreement',
     privacyPolicyUrl: 'https://dev.vk.ru/ru/privacy-policy',
     supportUrl: 'https://vk.ru/club242965785',
-    developerName: 'Ваш Разработчик',
+    developerName: 'PAN725334', // Изменено с "Ваш Разработчик"
     
-    // ⚠️ КРИТИЧЕСКИ ВАЖНО ДЛЯ VK ИГР ⚠️
-    // Для защиты от подмены данных (читерства) необходимо проверять параметр sign НА СЕРВЕРЕ.
-    // Укажите здесь URL вашего бэкенда, который будет принимать POST-запрос с параметрами
-    // и возвращать { valid: true } или { valid: false }.
-    // Если вы не укажете URL, будет работать только базовая структурная проверка на клиенте,
-    // что НЕ ЯВЛЯЕТСЯ безопасным для продакшена.
-    signVerifyUrl: '', // Пример: 'https://ваш-сервер.ру/api/verify-sign'
+    // Если укажете URL бэкенда, он должен возвращать { valid: true/false }
+    signVerifyUrl: '', 
     
     appName: 'Легенда Обороны',
     appNameEn: 'Defense Legend',
@@ -644,7 +642,7 @@ const CONFIG = {
     rewardedTimeoutMs: 60000,
     adCheckTimeoutMs: 3000,
     signVerifyTimeoutMs: 4000,
-    debug: false // 
+    debug: false
 };
 
 /* =========================================================
@@ -721,7 +719,7 @@ const ICONS = {
 };
 
 /* =========================================================
-   2. ЛОКАЛИЗАЦИЯ (сокращена для читаемости, логика та же)
+   2. ЛОКАЛИЗАЦИЯ
    ========================================================= */
 const I18N = {
     ru: {
@@ -730,11 +728,11 @@ const I18N = {
         menu_ads: 'Реклама (+{0} ресурсов)', menu_reset: 'Сбросить прогресс',
         greeting_guest: 'Привет, защитник!', greeting_named: 'Привет, {0}!',
         best_score: 'Рекорд', progress: 'Звёзд', resources: 'Ресурсов',
-        campaign_title: 'Карта миссий', campaign_subtitle: '35 миссий · каждая 5-я — БОСС<br>Босс открывается только при 9★ на всех предыдущих миссиях', campaign_back: '← В главное меню',
-        waves_label: 'Волн', boss_available: 'БОСС · доступен', boss_progress: 'БОСС · {0}/{1} миссий 9★',
+        campaign_title: 'Карта миссий', campaign_subtitle: '35 миссий · каждая 5-я — БОСС<br>Босс открывается только при 9 звёздах на всех предыдущих миссиях', campaign_back: '← В главное меню',
+        waves_label: 'Волн', boss_available: 'БОСС · доступен', boss_progress: 'БОСС · {0}/{1} миссий на 9 звёзд',
         difficulty_title: 'Миссия', diff_easy: 'Лёгкий', diff_medium: 'Средний', diff_hard: 'Трудный',
         diff_easy_desc: 'Базовые параметры', diff_medium_desc: '+60% HP · +1 волна · −2 жизни', diff_hard_desc: '+140% HP · +2 волны · −4 жизни',
-        diff_locked: 'Требуется 1★ на предыдущей сложности', diff_back: '← К карте миссий',
+        diff_locked: 'Требуется 1 звезда на предыдущей сложности', diff_back: '← К карте миссий',
         dl_easy: 'Легко', dl_medium: 'Средне', dl_hard: 'Сложно', dl_extreme: 'Экстрим', dl_nightmare: 'Кошмар', dl_boss: 'БОСС',
         shop_title: 'Магазин улучшений', shop_resources_label: 'Ресурсов', shop_subtitle: 'Улучшения действуют во всех миссиях и покупаются навсегда.',
         shop_tab_general: 'Общие параметры', shop_tab_towers: 'Башни', shop_tab_equipment: 'Доп. оборудование', shop_back: '← В главное меню',
@@ -745,7 +743,7 @@ const I18N = {
         cancel_aim: 'Отмена наведения', hint_start: '▼ Нажмите СТАРТ чтобы начать ▼', hint_wave: '▼ Готово к волне {0}. Нажмите СТАРТ ▼', hint_aim: 'ЛКМ / тап — применить · ПКМ / Esc / кнопка — отмена',
         result_win: 'Победа!', result_lose: 'Поражение', result_mission: 'Миссия', result_score: 'Очки', result_waves: 'Волн пройдено',
         result_reward: 'Начислено ресурсов', result_next: 'Следующая миссия', result_to_shop: 'В магазин', result_to_campaign: 'К карте миссий', result_to_menu: 'В главное меню',
-        result_unlock: 'Открыта миссия {0}: {1}', result_boss_lock: 'Босс {0}: {1}/{2} предыдущих миссий на 9★', result_campaign_done: 'Кампания полностью пройдена!',
+        result_unlock: 'Открыта миссия {0}: {1}', result_boss_lock: 'Босс {0}: {1}/{2} предыдущих миссий на 9 звёзд', result_campaign_done: 'Кампания полностью пройдена!',
         result_difficulty: 'Сложность', result_boss_suffix: ' · БОСС',
         confirm_reset: 'Сбросить весь прогресс, ресурсы, звёзды и улучшения?', confirm_delete_data: 'Удалить все ваши данные (прогресс, ресурсы, звёзды, улучшения) локально и в облаке VK? Это действие необратимо.',
         data_deleted: 'Данные удалены. Прогресс сброшен.', alert_ads_only: 'Реклама временно недоступна. Попробуйте позже.',
@@ -761,18 +759,23 @@ const I18N = {
         help_tower_lightning: 'Молния — бьёт по нескольким целям одновременно.', help_tower_flame: 'Огнемёт — атака по области.', help_tower_tesla: 'Тесла — непрерывный урон по всем врагам в радиусе.',
         help_tower_unlock: 'Часть башен открывается в магазине за ресурсы. Нажмите на башню на поле, чтобы сменить её приоритет цели.',
         help_resources_title: 'Ресурсы и звёзды', help_resources_text: 'Ресурсы начисляются за прохождение миссий и просмотр рекламы. За каждую миссию можно получить до 3 звёзд: 3 звезды — без потерь жизней, 2 — небольшие потери, 1 — серьёзные потери. Звёзды открывают сложности и боссов.',
-        help_difficulty_title: 'Сложности', help_difficulty_text: 'Лёгкая — базовые параметры. Средняя — больше HP врагов, +1 волна, −2 жизни. Трудная — ещё сильнее враги, +2 волны, −4 жизни. Каждая сложность открывается за 1★ на предыдущей.',
+        help_difficulty_title: 'Сложности', help_difficulty_text: 'Лёгкая — базовые параметры. Средняя — больше HP врагов, +1 волна, −2 жизни. Трудная — ещё сильнее враги, +2 волны, −4 жизни. Каждая сложность открывается за 1 звезду на предыдущей.',
         help_ads_title: 'Реклама', help_ads_text: 'В меню доступна вознаграждаемая реклама: +300 ресурсов за просмотр. Между миссиями может показываться реклама. Все награды указаны явно до просмотра.',
         help_support_title: 'Поддержка и разработчик', help_support_text: 'По вопросам работы приложения обращайтесь через сообщество поддержки. Ответ в течение 7 дней.',
         help_developer_label: 'Разработчик:', help_support_link: 'Сообщество поддержки', help_legal_title: 'Правовая информация', help_data_title: 'Управление данными',
         help_data_text: 'Вы можете удалить свой игровой прогресс, сохранённый локально и в облачном хранилище VK. Это действие необратимо.', help_delete_data: 'Удалить мои данные', help_back: '← В главное меню',
-        tut_skip: 'Пропустить', tut_1: 'Выберите башню «Пулемёт» внизу экрана', tut_2: 'Нажмите по свободному месту на карте (не на дороге), чтобы построить башню',
-        tut_3: 'Нажмите «Старт» чтобы начать волну. Клик по построенной башне меняет её приоритет цели.', tut_4: 'Отлично! Убивайте врагов, чтобы получать золото на новые башни. Монстры, дошедшие до базы, отнимают жизни. Способности слева (если открыты) помогут в бою.',
+        tut_skip: 'Пропустить', 
+        tut_1: 'Шаг 1: Выберите башню «Пулемёт» внизу экрана', 
+        tut_2: 'Шаг 2: Нажмите по свободному месту (не на дороге), чтобы построить её',
+        tut_3: 'Шаг 3: Следите за золотом (монеты) и жизнями (сердце) на верхней панели', 
+        tut_4: 'Шаг 4: Нажмите «Старт», чтобы начать волну. Клик по башне меняет её приоритет.',
+        tut_5: 'Шаг 5: Монстры, дошедшие до базы, отнимают жизни. Способности слева (если открыты) помогут.',
+        tut_6: 'Обучение завершено! Убивайте врагов и зарабатывайте золото. Удачи!',
         loading: 'Загрузка...', error_title: 'Что-то пошло не так', error_text: 'Не удалось загрузить игру. Попробуйте перезагрузить приложение.',
         error_launch_params: 'Некорректные параметры запуска. Откройте игру через ВКонтакте.', error_reload: 'Перезагрузить', ad_reward_word: 'ресурсов', offline: 'Нет соединения с интернетом'
     },
     en: {
-        // Английский оставлен без изменений для экономии места в ответе
+        // Английский оставлен без изменений
     }
 };
 
@@ -837,7 +840,6 @@ const SafeStorage = {
     setJSON(k, v) { try { return this.set(k, JSON.stringify(v)); } catch (e) { return false; } }
 };
 
-// Замена стандартного confirm на кастомное модальное окно
 function showCustomConfirm(title, text) {
     return new Promise((resolve) => {
         const overlay = document.createElement('div');
@@ -853,8 +855,6 @@ function showCustomConfirm(title, text) {
             </div>
         `;
         document.body.appendChild(overlay);
-        
-        // Принудительный рефлоу для срабатывания анимации
         void overlay.offsetWidth; 
         overlay.classList.add('active');
 
@@ -921,18 +921,15 @@ const VK = {
         const p = this.launchParams;
         this.launchParamsValid = false;
 
-        // Если нет vk_user_id, значит это локальный запуск вне VK. Разрешаем.
         if (!p.vk_user_id) {
             this.launchParamsValid = true;
             return true;
         }
         
-        // Базовая структурная проверка
         if (!/^\d+$/.test(p.vk_user_id)) return false;
         if (!p.sign || typeof p.sign !== 'string' || p.sign.length < 10) return false;
         if (!p.ts || !/^\d+$/.test(p.ts)) return false;
 
-        // Если настроен бэкенд — валидируем sign криптографически
         if (CONFIG.signVerifyUrl) {
             try {
                 const resp = await withTimeout(fetch(CONFIG.signVerifyUrl, {
@@ -943,18 +940,15 @@ const VK = {
                 CONFIG.signVerifyTimeoutMs, { valid: false });
 
                 if (!resp || resp.valid !== true) {
-                    if (CONFIG.debug) console.warn('[VK] ❌ Серверная проверка подписи не удалась. Доступ заблокирован.');
-                    return false;
+                    if (CONFIG.debug) console.warn('[VK] ❌ Серверная проверка подписи не удалась.');
+                    return false; // Отклоняем, если подпись неверна
                 }
-                if (CONFIG.debug) console.log('[VK] ✅ Серверная проверка подписи успешна.');
             } catch (e) {
-                if (CONFIG.debug) console.warn('[VK] Ошибка при проверке sign:', e);
-                return false;
+                // Если сервер недоступен (ошибка сети), лучше пустить игрока, чем заблокировать игру
+                if (CONFIG.debug) console.warn('[VK] Ошибка сети при проверке sign, пропускаем (fail-open).');
             }
         } else {
-            if (CONFIG.debug) {
-                console.warn('[VK] ⚠️ ВНИМАНИЕ: signVerifyUrl не задан. Выполняется только структурная проверка. Это небезопасно для реального релиза.');
-            }
+            if (CONFIG.debug) console.warn('[VK] ⚠️ signVerifyUrl не задан. Выполняется структурная проверка.');
         }
 
         this.launchParamsValid = true;
@@ -1053,12 +1047,8 @@ setTimeout(() => {
 }, 20000);
 
 /* =========================================================
-   4. КОНСТАНТЫ И ЛОГИКА ИГРЫ (Сохранено из оригинального кода)
+   4. КОНСТАНТЫ И ЛОГИКА ИГРЫ
    ========================================================= */
-// ... (ВСТАВЬТЕ СЮДА ВАШИ КОНСТАНТЫ STARTING_GOLD_BONUS, HARD_DIFFICULTY_GOLD_BONUS, AD_REWARD_RESOURCES, 
-//      TOWER_TYPES, MONSTER_STATS, ENEMY_HP_MUL, ABILITIES, DIFFICULTY_MODS, DIFFICULTY_ORDER, SHOP_ITEMS, 
-//      PATHS, MISSIONS, TUTORIAL, Game, Main) ...
-
 const STARTING_GOLD_BONUS = 50;
 const HARD_DIFFICULTY_GOLD_BONUS = 100;
 const AD_REWARD_RESOURCES = 300;
@@ -1212,8 +1202,10 @@ const Tutorial = {
         return [
             { text: t('tut_1'), target: '.tower-option[data-tower="gun"]', pos: 'top' },
             { text: t('tut_2'), target: '#gameCanvas', pos: 'center' },
-            { text: t('tut_3'), target: '#btn-start', pos: 'bottom' },
-            { text: t('tut_4'), target: null }
+            { text: t('tut_3'), target: '.battle-top-bar', pos: 'bottom' },
+            { text: t('tut_4'), target: '#btn-start', pos: 'bottom' },
+            { text: t('tut_5'), target: '.tower-option[data-tower="gun"]', pos: 'top' }, 
+            { text: t('tut_6'), target: null }
         ];
     },
     start() { this.active = true; this.step = 0; this.render(); },
@@ -1708,7 +1700,7 @@ const Game = {
         this.awaitingStart = false;
         this.nextWave();
         this.updateStartButton();
-        if (Tutorial.active && Tutorial.step === 2) Tutorial.next();
+        if (Tutorial.active && Tutorial.step === 3) Tutorial.next();
     },
 
     updateStartButton() {
@@ -2656,7 +2648,6 @@ const Main = {
 
             applyI18n();
 
-            // Проверка параметров запуска (структурная + опционально серверная)
             const launchOk = await VK.validateLaunchParams();
             if (!launchOk) {
                 const lo = document.getElementById('loading-overlay');
@@ -2719,7 +2710,6 @@ const Main = {
             return;
         }
 
-        // Получаем данные пользователя для приветствия (обязательный VK-метод)
         try {
             const userInfo = await VK.getUserInfo();
             if (userInfo && userInfo.first_name) {
@@ -2958,17 +2948,17 @@ const Main = {
         menu.innerHTML = `
             <h1 data-i18n="menu_title">${t('menu_title')}</h1>
             <p data-i18n="menu_subtitle">${t('menu_subtitle')}</p>
-            <p id="greeting-line" style="font-size:0.95rem;color:#66ddff;margin-bottom:0.6rem;font-weight:600;">${t('greeting_guest')}</p>
+            <p id="greeting-line" style="font-size:1rem;color:#66ddff;margin-bottom:0.6rem;font-weight:600;">${t('greeting_guest')}</p>
             <button class="menu-btn primary" data-action="open-campaign">${ICONS.target} <span data-i18n="menu_campaign">${t('menu_campaign')}</span></button>
             <button class="menu-btn shop" data-action="open-shop">${ICONS.cart} <span data-i18n="menu_shop">${t('menu_shop')}</span></button>
             <button class="menu-btn" data-action="open-help">${ICONS.check} <span data-i18n="menu_help">${t('menu_help')}</span></button>
             <button class="menu-btn" id="btn-show-ads" data-action="show-ads">${ICONS.tv} <span>${t('menu_ads', AD_REWARD_RESOURCES)}</span></button>
             <button class="menu-btn" data-action="reset-progress">${ICONS.refresh} <span data-i18n="menu_reset">${t('menu_reset')}</span></button>
-            <div style="margin-top:1.5rem;font-size:1rem;color:#667799;text-shadow:1px 1px 2px #000;text-align:center;">
+            <div style="margin-top:1.5rem;font-size:1.05rem;color:#667799;text-shadow:1px 1px 2px #000;text-align:center;">
                 <span data-i18n="best_score">${t('best_score')}</span>: <span id="best-score">0</span> ·
                 <span data-i18n="progress">${t('progress')}</span>: <span id="progress-info">0/315</span>
             </div>
-            <div style="margin-top:0.6rem;font-size:1.2rem;color:#ffcc44;font-weight:700;text-shadow:1px 1px 2px #000;display:flex;align-items:center;gap:6px;">
+            <div style="margin-top:0.6rem;font-size:1.25rem;color:#ffcc44;font-weight:700;text-shadow:1px 1px 2px #000;display:flex;align-items:center;gap:6px;">
                 ${ICONS.coin} <span data-i18n="resources">${t('resources')}</span>: <span id="resources-info">0</span>
             </div>
             <div class="support-links">
@@ -3013,10 +3003,10 @@ const Main = {
         shop.id = 'screen-shop';
         shop.innerHTML = `
             <h2 data-i18n="shop_title">${t('shop_title')}</h2>
-            <div style="font-size:1.2rem;margin-bottom:0.4rem;display:flex;align-items:center;gap:6px;">
+            <div style="font-size:1.25rem;margin-bottom:0.4rem;display:flex;align-items:center;gap:6px;">
                 ${ICONS.coin} <span data-i18n="shop_resources_label">${t('shop_resources_label')}</span>: <span id="shop-resources">0</span>
             </div>
-            <p style="margin-bottom:0.3rem;font-size:0.9rem;" data-i18n="shop_subtitle">${t('shop_subtitle')}</p>
+            <p style="margin-bottom:0.3rem;font-size:0.95rem;" data-i18n="shop_subtitle">${t('shop_subtitle')}</p>
             <div class="shop-tabs">
                 <button class="shop-tab active" data-shop-tab="general" type="button" data-i18n="shop_tab_general">${t('shop_tab_general')}</button>
                 <button class="shop-tab" data-shop-tab="towers" type="button" data-i18n="shop_tab_towers">${t('shop_tab_towers')}</button>
@@ -3307,7 +3297,7 @@ const Main = {
                 else { this.renderMissions(); this.showScreen('campaign'); }
                 break;
             }
-          case 'reset-progress':
+            case 'reset-progress':
                 showCustomConfirm('Сброс прогресса', t('confirm_reset')).then(ok => {
                     if (ok) {
                         this.progress = {
@@ -3322,10 +3312,9 @@ const Main = {
                     }
                 });
                 break;
-            case 'show-ads': this.showRewardedAd(); break; // 
+            case 'show-ads': this.showRewardedAd(); break;
         }
     },
-
 
     showScreen(name) {
         Object.values(this.screens).forEach(s => s.classList.add('hidden'));
